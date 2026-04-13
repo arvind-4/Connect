@@ -1,0 +1,12 @@
+[project]
+name = "connect"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "channels==3.0.4",
+    "django>=4.2,<4.3",
+    "psycopg2-binary==2.9.11",
+    "whitenoise==6.11.0",
+]
