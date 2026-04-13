@@ -1,8 +1,0 @@
-Include/
-Lib/
-Scripts/
-__pycache__/
-
-node_modules/
-
-.env
