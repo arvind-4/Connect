@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext",
+    "target": "ES2019",
+    "moduleResolution": "Bundler",
+    "strict": true
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "connect-lib",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "vite build --watch",
+    "copy": "copyfiles -f 'dist/connect.min.js' '../../public/js/connect'",
+    "build": "tsc -p tsconfig.build.json && vite build && pnpm copy"
+  }
+}

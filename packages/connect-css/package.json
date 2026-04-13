@@ -1,0 +1,9 @@
+{
+  "name": "connect-css",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tailwind build -i ./src/tailwind.css -o ../../public/css/tailwind.min.css --watch",
+    "build": "cross-env NODE_ENV=production postcss src/tailwind.css -o ../../public/css/tailwind/tailwind.min.css"
+  }
+}
