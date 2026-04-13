@@ -1,0 +1,49 @@
+{
+  "name": "landing-page",
+  "description": "connect marketing website",
+  "type": "module",
+  "author": {
+    "name": "Arvind .A",
+    "email": "pingarvindforquestions@gmail.com",
+    "url": "https://arvind11.vercel.app",
+    "username": "arvind-4"
+  },
+  "scripts": {
+    "dev": "vite --port 3000",
+    "copy:js": "copyfiles -f 'dist/index.*.js' '../../public/js/react'",
+    "copy:css": "copyfiles -f 'dist/index*.css' '../../public/css/react'",
+    "build": "vite build && pnpm copy:js && pnpm copy:css",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.2.1",
+    "react-transition-group": "^4.4.1",
+    "sweetalert2": "^11.26.24"
+  },
+  "license": "MIT",
+  "version": "1.0.0",
+  "private": true,
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 11"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arvind-4/connect"
+  },
+  "keywords": [
+    "connect-frontend",
+    "landing-page",
+    "marketing-website",
+    "frontend",
+    "website",
+    "website-frontend"
+  ]
+}
