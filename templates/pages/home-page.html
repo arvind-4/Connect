@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+{% include 'react/css.html' %}
+{% include 'react/js.html' %}
+
+
+<script>
+    if (localStorage.getItem('sidebar-expanded') == 'true') {
+        document.querySelector('body').classList.add('sidebar-expanded');
+    } else {
+        document.querySelector('body').classList.remove('sidebar-expanded');
+    }
+</script>   
+<div id="root" data-is_authenticated="{{request.user.is_authenticated}}"></div>
+
+{% endblock content %}
