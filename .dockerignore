@@ -13,3 +13,11 @@ bin/
 lib/
 lib64
 share/
+Include/
+Lib/
+Scripts/
+__pycache__/
+
+node_modules/
+
+.env
