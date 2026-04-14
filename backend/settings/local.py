@@ -1,5 +1,7 @@
 from backend.settings.base import *
 
+print("BASE_DIR", BASE_DIR)
+
 
 
 SECRET_KEY = 'django-insecure-e8yccf5!q5l)@upx+)tyz*=-l_1*errtn7qfm(--bj)gal4yp_'
