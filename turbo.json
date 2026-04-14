@@ -1,17 +1,26 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "ui": "tui",
+  "globalDependencies": ["**/.eslintrc*", "**/.prettierrc*"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "public/css/tailwind/**",
+        "public/js/**",
+        "!.next/cache/**"
+      ]
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+    "format:check": {
+      "inputs": ["$TURBO_DEFAULT$", "**/*.{ts,tsx,js,jsx,json,md,css,scss,html,yml,yaml}"],
+      "outputs": [],
+      "cache": true
     },
     "dev": {
       "cache": false,
