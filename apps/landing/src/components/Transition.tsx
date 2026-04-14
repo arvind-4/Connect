@@ -1,11 +1,5 @@
-import React, {
-  type ElementType,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-} from 'react';
-import { CSSTransition as ReactCSSTransition } from 'react-transition-group';
+import React, { type ElementType, type ReactNode, useContext, useEffect, useRef } from "react";
+import { CSSTransition as ReactCSSTransition } from "react-transition-group";
 
 type TransitionContextType = {
   parent: {
@@ -45,24 +39,24 @@ type CSSTransitionProps = {
 
 function CSSTransition({
   show,
-  enter = '',
-  enterStart = '',
-  enterEnd = '',
-  leave = '',
-  leaveStart = '',
-  leaveEnd = '',
+  enter = "",
+  enterStart = "",
+  enterEnd = "",
+  leave = "",
+  leaveStart = "",
+  leaveEnd = "",
   appear,
   unmountOnExit,
-  tag = 'div',
+  tag = "div",
   children,
   ...rest
-}: CSSTransitionProps) {
-  const enterClasses = enter.split(' ').filter(Boolean);
-  const enterStartClasses = enterStart.split(' ').filter(Boolean);
-  const enterEndClasses = enterEnd.split(' ').filter(Boolean);
-  const leaveClasses = leave.split(' ').filter(Boolean);
-  const leaveStartClasses = leaveStart.split(' ').filter(Boolean);
-  const leaveEndClasses = leaveEnd.split(' ').filter(Boolean);
+}: CSSTransitionProps): JSX.Element {
+  const enterClasses = enter.split(" ").filter(Boolean);
+  const enterStartClasses = enterStart.split(" ").filter(Boolean);
+  const enterEndClasses = enterEnd.split(" ").filter(Boolean);
+  const leaveClasses = leave.split(" ").filter(Boolean);
+  const leaveStartClasses = leaveStart.split(" ").filter(Boolean);
+  const leaveEndClasses = leaveEnd.split(" ").filter(Boolean);
 
   const removeFromDom = unmountOnExit;
   const nodeRef = useRef<HTMLElement | null>(null);
@@ -73,10 +67,7 @@ function CSSTransition({
     }
   };
 
-  const removeClasses = (
-    node: HTMLElement,
-    classes: string[],
-  ): void => {
+  const removeClasses = (node: HTMLElement, classes: string[]): void => {
     if (classes.length > 0) {
       node.classList.remove(...classes);
     }
@@ -84,64 +75,64 @@ function CSSTransition({
 
   return (
     <ReactCSSTransition
-      appear={appear}
+      appear={appear ?? false}
       nodeRef={nodeRef}
       unmountOnExit={removeFromDom}
-      in={show}
+      in={show ?? false}
       addEndListener={(done) => {
         const node = nodeRef.current;
-        if (!node) return;
-        node.addEventListener('transitionend', done, false);
+        if (node === null) return;
+        node.addEventListener("transitionend", done, false);
       }}
       onEnter={() => {
         const node = nodeRef.current;
-        if (!node) return;
+        if (node === null) return;
 
-        if (!removeFromDom) node.style.display = '';
+        if (removeFromDom === false) node.style.display = "";
 
         addClasses(node, [...enterClasses, ...enterStartClasses]);
       }}
       onEntering={() => {
         const node = nodeRef.current;
-        if (!node) return;
+        if (node === null) return;
 
         removeClasses(node, enterStartClasses);
         addClasses(node, enterEndClasses);
       }}
       onEntered={() => {
         const node = nodeRef.current;
-        if (!node) return;
+        if (node === null) return;
 
         removeClasses(node, [...enterEndClasses, ...enterClasses]);
       }}
       onExit={() => {
         const node = nodeRef.current;
-        if (!node) return;
+        if (node === null) return;
 
         addClasses(node, [...leaveClasses, ...leaveStartClasses]);
       }}
       onExiting={() => {
         const node = nodeRef.current;
-        if (!node) return;
+        if (node === null) return;
 
         removeClasses(node, leaveStartClasses);
         addClasses(node, leaveEndClasses);
       }}
       onExited={() => {
         const node = nodeRef.current;
-        if (!node) return;
+        if (node === null) return;
 
         removeClasses(node, [...leaveEndClasses, ...leaveClasses]);
 
-        if (!removeFromDom) node.style.display = 'none';
+        if (removeFromDom === false) node.style.display = "none";
       }}
     >
       <Component
         ref={nodeRef}
         {...rest}
         style={{
-          display: !removeFromDom ? 'none' : undefined,
-          ...(rest.style || {}),
+          display: removeFromDom !== true ? "none" : undefined,
+          ...(rest.style ?? {}),
         }}
       >
         {children}
@@ -164,25 +155,23 @@ type BaseTransitionProps = {
   children?: React.ReactNode;
 };
 
-type TransitionProps<T extends React.ElementType = 'div'> = {
+type TransitionProps<T extends React.ElementType = "div"> = {
   tag?: T;
 } & BaseTransitionProps &
   Omit<React.ComponentPropsWithoutRef<T>, keyof BaseTransitionProps>;
 
-function Transition<T extends React.ElementType = 'div'>(
-  props: TransitionProps<T>,
-) {
+function Transition<T extends React.ElementType = "div">(props: TransitionProps<T>): JSX.Element {
   const {
-    tag: Tag = 'div',
+    tag: _Tag = "div",
     show,
     appear,
-    enter,
-    enterStart,
-    enterEnd,
-    leave,
-    leaveStart,
-    leaveEnd,
-    unmountOnExit,
+    enter: _enter,
+    enterStart: _enterStart,
+    enterEnd: _enterEnd,
+    leave: _leave,
+    leaveStart: _leaveStart,
+    leaveEnd: _leaveEnd,
+    unmountOnExit: _unmountOnExit,
     ...rest
   } = props;
   const { parent } = useContext(TransitionContext);
@@ -192,8 +181,8 @@ function Transition<T extends React.ElementType = 'div'>(
   if (isChild) {
     return (
       <CSSTransition
-        appear={parent.appear || !parent.isInitialRender}
-        show={parent.show}
+        appear={(parent.appear ?? false) || !(parent.isInitialRender ?? false)}
+        show={parent.show ?? false}
         {...rest}
       />
     );

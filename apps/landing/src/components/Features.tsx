@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   FeaturesBg,
   FeaturesElement1,
   FeaturesElement2,
   FeaturesElement3,
-} from '../store/constants';
-import Transition from './Transition';
+} from "../store/constants";
+import Transition from "./Transition";
 
 export default function Features(): JSX.Element {
   const [tab, setTab] = useState<number>(1);
@@ -14,15 +14,15 @@ export default function Features(): JSX.Element {
 
   const heightFix = useCallback((): void => {
     const el = tabs.current;
-    if (!el) return;
+    if (el === null) return;
 
     const children = el.children;
     const activeChild = children[tab - 1] as HTMLElement | undefined;
 
-    if (activeChild) {
-      el.style.height = `${activeChild.offsetHeight}px`;
+    if (activeChild !== undefined) {
+      el.style.height = activeChild.offsetHeight + "px";
     }
-  }, [tab]); // ✅ dependency declared properly
+  }, [tab]);
 
   useEffect(() => {
     heightFix();
@@ -49,13 +49,12 @@ export default function Features(): JSX.Element {
               <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
                 <h3 className="h3 mb-3">Powerful suite of tools</h3>
                 <p className="text-xl text-gray-600">
-                  We provide a Suite of Tools which help Rapid
-                  application development.
+                  We provide a Suite of Tools which help Rapid application development.
                 </p>
               </div>
               <div className="mb-8 md:mb-0">
                 <a
-                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 1 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gray-200 border-transparent'}`}
+                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 1 ? "bg-white shadow-md border-gray-200 hover:shadow-lg" : "bg-gray-200 border-transparent"}`}
                   href="#0"
                   onClick={(e) => {
                     e.preventDefault();
@@ -67,9 +66,8 @@ export default function Features(): JSX.Element {
                       Building the Simple ecosystem
                     </div>
                     <div className="text-gray-600">
-                      Take collaboration to the next level with
-                      security and administrative features built for
-                      teams.
+                      Take collaboration to the next level with security and administrative features
+                      built for teams.
                     </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
@@ -83,7 +81,7 @@ export default function Features(): JSX.Element {
                   </div>
                 </a>
                 <a
-                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 2 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gray-200 border-transparent'}`}
+                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 2 ? "bg-white shadow-md border-gray-200 hover:shadow-lg" : "bg-gray-200 border-transparent"}`}
                   href="#0"
                   onClick={(e) => {
                     e.preventDefault();
@@ -95,9 +93,8 @@ export default function Features(): JSX.Element {
                       Building the Simple ecosystem
                     </div>
                     <div className="text-gray-600">
-                      Take collaboration to the next level with
-                      security and administrative features built for
-                      teams.
+                      Take collaboration to the next level with security and administrative features
+                      built for teams.
                     </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
@@ -114,7 +111,7 @@ export default function Features(): JSX.Element {
                   </div>
                 </a>
                 <a
-                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 3 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gray-200 border-transparent'}`}
+                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 3 ? "bg-white shadow-md border-gray-200 hover:shadow-lg" : "bg-gray-200 border-transparent"}`}
                   href="#0"
                   onClick={(e) => {
                     e.preventDefault();
@@ -126,9 +123,8 @@ export default function Features(): JSX.Element {
                       Building the Simple ecosystem
                     </div>
                     <div className="text-gray-600">
-                      Take collaboration to the next level with
-                      security and administrative features built for
-                      teams.
+                      Take collaboration to the next level with security and administrative features
+                      built for teams.
                     </div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
@@ -177,7 +173,7 @@ export default function Features(): JSX.Element {
                       width="500"
                       height="44"
                       alt="Element"
-                      style={{ top: '30%' }}
+                      style={{ top: "30%" }}
                     />
                   </div>
                 </Transition>
@@ -206,7 +202,7 @@ export default function Features(): JSX.Element {
                       width="500"
                       height="44"
                       alt="Element"
-                      style={{ top: '30%' }}
+                      style={{ top: "30%" }}
                     />
                   </div>
                 </Transition>
@@ -235,7 +231,7 @@ export default function Features(): JSX.Element {
                       width="500"
                       height="44"
                       alt="Element"
-                      style={{ top: '30%' }}
+                      style={{ top: "30%" }}
                     />
                   </div>
                 </Transition>

@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
@@ -7,11 +7,19 @@ export default defineConfig({
     cssCodeSplit: false,
     rollupOptions: {
       output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name?.endsWith('.css')) {
-            return 'index.min.css';
+        dir: "dist",
+        entryFileNames: "index.min.js",
+        chunkFileNames: "[name].min.js",
+        manualChunks: (id) => {
+          if (id.includes("node_modules")) {
+            return "vendor";
           }
-          return '[name][extname]';
+        },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith(".css")) {
+            return "index.min.css";
+          }
+          return "[name][extname]";
         },
       },
     },

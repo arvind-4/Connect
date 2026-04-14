@@ -1,4 +1,4 @@
-import { TestimonialImage } from '../store/constants';
+import { TestimonialImage } from "../store/constants";
 
 export default function Testimonials(): JSX.Element {
   return (
@@ -11,12 +11,9 @@ export default function Testimonials(): JSX.Element {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h2 className="h2 mb-4 mt-5">
-              Trusted by over 20,000 companies all over the world
-            </h2>
+            <h2 className="h2 mb-4 mt-5">Trusted by over 20,000 companies all over the world</h2>
             <p className="text-xl text-gray-600">
-              We are a team of designers and developers who help
-              brands with their digital products.
+              We are a team of designers and developers who help brands with their digital products.
             </p>
           </div>
           <div className="max-w-3xl mx-auto mt-20">
@@ -32,14 +29,10 @@ export default function Testimonials(): JSX.Element {
                   />
                 </div>
                 <blockquote className="text-xl font-medium mb-4">
-                  "I love this product and would recommend it to
-                  anyone. Could be not easier to use, and our multiple
-                  websites are wonderful. We get nice comments all the
-                  time."
+                  "I love this product and would recommend it to anyone. Could be not easier to use,
+                  and our multiple websites are wonderful. We get nice comments all the time."
                 </blockquote>
-                <cite className="block font-bold text-lg not-italic mb-1">
-                  Arvind
-                </cite>
+                <cite className="block font-bold text-lg not-italic mb-1">Arvind</cite>
                 <div className="text-gray-600">
                   <span>CEO & Founder </span>
                   <a

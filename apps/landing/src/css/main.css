@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=fallback');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=fallback");
 
 @layer utilities {
   .rtl {
@@ -13,7 +13,6 @@
 }
 
 @layer components {
-
   /* Headings */
   .h1 {
     @apply text-4xl font-extrabold leading-tight tracking-tighter;

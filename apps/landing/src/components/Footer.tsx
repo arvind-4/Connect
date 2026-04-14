@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { Logo } from '../store/constants';
+import { Logo } from "../store/constants";
 
 export default function Footer(): JSX.Element {
   return (
@@ -10,23 +8,19 @@ export default function Footer(): JSX.Element {
           <div className="sm:col-span-12 lg:col-span-3">
             <div className="mb-2">
               <a href="/">
-                <img
-                  className="h-8 w-10 sm:h-10"
-                  src={Logo}
-                  alt="Connect"
-                />
+                <img className="h-8 w-10 sm:h-10" src={Logo} alt="Connect" />
               </a>
             </div>
             <div className="text-sm text-gray-600">
               <a
-                href="#"
+                href="/"
                 className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
               >
                 Terms
-              </a>{' '}
+              </a>{" "}
               ·
               <a
-                href="#"
+                href="/"
                 className="text-gray-600 hover:text-gray-900 hover:underline transition duration-150 ease-in-out"
               >
                 Privacy Policy
@@ -36,7 +30,7 @@ export default function Footer(): JSX.Element {
           <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0">
             <li>
               <a
-                href="#"
+                href="/"
                 className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Twitter"
               >
@@ -51,7 +45,7 @@ export default function Footer(): JSX.Element {
             </li>
             <li className="ml-4">
               <a
-                href="#"
+                href="/"
                 className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Github"
               >
@@ -66,7 +60,7 @@ export default function Footer(): JSX.Element {
             </li>
             <li className="ml-4">
               <a
-                href="#"
+                href="/"
                 className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out"
                 aria-label="Facebook"
               >
@@ -81,10 +75,10 @@ export default function Footer(): JSX.Element {
             </li>
           </ul>
           <div className="text-sm text-gray-600 mr-4">
-            Made by{' '}
+            Made by{" "}
             <a
               className="text-blue-600 hover:underline"
-              href="https://arvind11.tk/"
+              href="https://arvind11.vercel.app/"
               target="_blank"
             >
               Arvind

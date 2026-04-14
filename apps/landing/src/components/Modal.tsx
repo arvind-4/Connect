@@ -1,6 +1,6 @@
-import { type ReactNode, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef } from "react";
 
-import Transition from './Transition';
+import Transition from "./Transition";
 
 type ModalProps = {
   children?: ReactNode;
@@ -22,8 +22,8 @@ export default function Modal({
   useEffect((): (() => void) => {
     const clickHandler = (event: MouseEvent): void => {
       if (
-        !show ||
-        !modalContent.current ||
+        show === false ||
+        modalContent.current === null ||
         modalContent.current.contains(event.target as Node)
       ) {
         return;
@@ -31,23 +31,23 @@ export default function Modal({
       handleClose();
     };
 
-    document.addEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
 
     return (): void => {
-      document.removeEventListener('click', clickHandler);
+      document.removeEventListener("click", clickHandler);
     };
   }, [show, handleClose]);
 
   useEffect((): (() => void) => {
     const keyHandler = (event: KeyboardEvent): void => {
-      if (event.key !== 'Escape') return;
+      if (event.key !== "Escape") return;
       handleClose();
     };
 
-    document.addEventListener('keydown', keyHandler);
+    document.addEventListener("keydown", keyHandler);
 
     return (): void => {
-      document.removeEventListener('keydown', keyHandler);
+      document.removeEventListener("keydown", keyHandler);
     };
   }, [handleClose]);
 
@@ -80,10 +80,7 @@ export default function Modal({
         leaveStart="opacity-100 scale-100"
         leaveEnd="opacity-0 scale-95"
       >
-        <div
-          className="bg-white overflow-auto max-w-6xl w-full max-h-full"
-          ref={modalContent}
-        >
+        <div className="bg-white overflow-auto max-w-6xl w-full max-h-full" ref={modalContent}>
           {children}
         </div>
       </Transition>
