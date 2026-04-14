@@ -1,10 +1,21 @@
 {
   "compilerOptions": {
-    "noEmit": true,
+    "target": "ES2022",
+    "lib": ["DOM", "ES2022"],
     "module": "ESNext",
-    "target": "ES2019",
     "moduleResolution": "Bundler",
-    "strict": true
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+    "exactOptionalPropertyTypes": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": ["src"]
 }

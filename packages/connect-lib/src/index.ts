@@ -1,72 +1,69 @@
 type PeerEntry = [RTCPeerConnection, RTCDataChannel];
 
+interface SignalPayload {
+  sdp?: RTCSessionDescriptionInit;
+  receiver_channel_name?: string;
+}
+
 interface SignalMessage {
   peer: string;
-  action: string;
-  message: any;
+  action: "new-peer" | "new-offer" | "new-answer";
+  message: SignalPayload;
   room_id: string;
 }
 
 const mapPeers: Record<string, PeerEntry> = {};
 
-const localVideo = document.querySelector(
-  '#local-video',
-) as HTMLVideoElement;
+function getEl<T extends HTMLElement>(selector: string, type: { new (): T }): T {
+  const el = document.querySelector(selector);
+  if (!(el instanceof type)) {
+    throw new Error(`${selector} not found or wrong type`);
+  }
+  return el;
+}
+
+const localVideo = getEl("#local-video", HTMLVideoElement);
+const btnToggleAudio = getEl("#btn-toggle-audio", HTMLButtonElement);
+const btnToggleVideo = getEl("#btn-toggle-video", HTMLButtonElement);
+const messageInput = getEl("#msg", HTMLInputElement);
+const btnSendMsg = getEl("#btn-send-msg", HTMLButtonElement);
+const ul = getEl("#message-list", HTMLUListElement);
+const usernameInput = getEl("#username", HTMLInputElement);
+const btnJoin = getEl("#btn-join", HTMLButtonElement);
 
 let localStream: MediaStream = new MediaStream();
 
-const btnToggleAudio = document.querySelector(
-  '#btn-toggle-audio',
-) as HTMLButtonElement;
-const btnToggleVideo = document.querySelector(
-  '#btn-toggle-video',
-) as HTMLButtonElement;
+function safeParseString(value: string): string {
+  try {
+    const parsed: unknown = JSON.parse(value);
+    return typeof parsed === "string" ? parsed : "";
+  } catch {
+    return "";
+  }
+}
 
-const messageInput = document.querySelector(
-  '#msg',
-) as HTMLInputElement;
-const btnSendMsg = document.querySelector(
-  '#btn-send-msg',
-) as HTMLButtonElement;
+const room_id = safeParseString(getEl("#json-room_id", HTMLElement).textContent);
 
-const ul = document.querySelector(
-  '#message-list',
-) as HTMLUListElement;
-
-const room_id: string = JSON.parse(
-  (document.getElementById('json-room_id') as HTMLElement)
-    .textContent || '""',
-);
-
-const start = window.location.protocol === 'https:' ? 'wss' : 'ws';
-
+const start = window.location.protocol === "https:" ? "wss" : "ws";
 const endPoint = `${start}://${window.location.host}/${start}/${room_id}/`;
 
 let webSocket: WebSocket;
-
-const usernameInput = document.querySelector(
-  '#username',
-) as HTMLInputElement;
-let username: string;
-
-const btnJoin = document.querySelector(
-  '#btn-join',
-) as HTMLButtonElement;
+let username = "";
 
 btnJoin.onclick = () => {
-  username = usernameInput.value;
+  username = usernameInput.value.trim();
 
   if (!username) {
     alert(`The Username can't be Null!`);
     return;
   }
 
-  document.getElementById('complete-div')?.remove();
+  document.getElementById("complete-div")?.remove();
 
   webSocket = new WebSocket(endPoint);
 
   webSocket.onopen = () => {
-    sendSignal('new-peer', {});
+    sendSignal("new-peer", {});
   };
 
   webSocket.onmessage = webSocketOnMessage;
@@ -75,97 +72,83 @@ btnJoin.onclick = () => {
   messageInput.disabled = false;
 };
 
-function webSocketOnMessage(event: MessageEvent) {
-  const parsedData = JSON.parse(event.data);
-
-  const action = parsedData.action;
-  const peerUsername = parsedData.peer;
-
-  if (peerUsername === username) return;
-
-  const receiver_channel_name =
-    parsedData.message.receiver_channel_name;
-
-  if (action === 'new-peer') {
-    createOfferer(peerUsername, receiver_channel_name);
-    return;
-  }
-
-  if (action === 'new-offer') {
-    const offer = parsedData.message.sdp;
-    createAnswerer(offer, peerUsername, receiver_channel_name);
-    return;
-  }
-
-  if (action === 'new-answer') {
-    const peer = mapPeers[peerUsername][0];
-    const answer = parsedData.message.sdp;
-    peer.setRemoteDescription(answer);
+function parseMessage(data: string): SignalMessage | null {
+  try {
+    return JSON.parse(data) as SignalMessage;
+  } catch {
+    return null;
   }
 }
 
-messageInput.addEventListener('keyup', (event: KeyboardEvent) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    btnSendMsg.click();
+function webSocketOnMessage(event: MessageEvent<string>) {
+  const parsedData = parseMessage(event.data);
+  if (!parsedData) return;
+
+  const { action, peer, message } = parsedData;
+
+  if (peer === username) return;
+
+  const receiver = message.receiver_channel_name ?? "";
+
+  switch (action) {
+    case "new-peer":
+      createOfferer(peer, receiver);
+      break;
+
+    case "new-offer":
+      if (message.sdp) {
+        createAnswerer(message.sdp, peer, receiver);
+      }
+      break;
+
+    case "new-answer": {
+      const peerEntry = mapPeers[peer];
+      if (peerEntry && message.sdp) {
+        void peerEntry[0].setRemoteDescription(message.sdp);
+      }
+      break;
+    }
   }
-});
+}
 
-btnSendMsg.onclick = btnSendMsgOnClick;
+btnSendMsg.onclick = () => {
+  const message = messageInput.value.trim();
+  if (!message) return;
 
-function btnSendMsgOnClick() {
-  const message = messageInput.value;
-
-  if (!message) {
-    // @ts-ignore (if Swal not typed)
-    Swal.fire({
-      icon: 'error',
-      title: 'Oops ...',
-      text: `Message Can't be Empty!`,
-    });
-    return;
-  }
-
-  const li = document.createElement('li');
-  li.appendChild(document.createTextNode(`Me: ${message}`));
+  const li = document.createElement("li");
+  li.textContent = `Me: ${message}`;
   ul.appendChild(li);
 
-  const dataChannels = getDataChannels();
-  dataChannels.forEach((dc) => {
+  getDataChannels().forEach((dc) => {
     dc.send(`${username}: ${message}`);
   });
 
-  messageInput.value = '';
-}
-
-const constraints: MediaStreamConstraints = {
-  video: true,
-  audio: true,
+  messageInput.value = "";
 };
 
 navigator.mediaDevices
-  .getUserMedia(constraints)
-  .then((stream: MediaStream) => {
+  .getUserMedia({ video: true, audio: true })
+  .then((stream) => {
     localStream = stream;
     localVideo.srcObject = stream;
     localVideo.muted = true;
 
-    const audioTracks = stream.getAudioTracks();
-    const videoTracks = stream.getVideoTracks();
+    const [audioTrack] = stream.getAudioTracks();
+    const [videoTrack] = stream.getVideoTracks();
 
     btnToggleAudio.onclick = () => {
-      audioTracks[0].enabled = !audioTracks[0].enabled;
+      if (audioTrack) audioTrack.enabled = !audioTrack.enabled;
     };
 
     btnToggleVideo.onclick = () => {
-      videoTracks[0].enabled = !videoTracks[0].enabled;
+      if (videoTrack) videoTrack.enabled = !videoTrack.enabled;
     };
   })
   .catch((error: unknown) => {
-    console.error('Error accessing media devices.', error);
+    console.error("Media error:", error);
   });
 
-function sendSignal(action: string, message: any) {
+function sendSignal(action: SignalMessage["action"], message: SignalPayload) {
   const data: SignalMessage = {
     peer: username,
     action,
@@ -176,153 +159,119 @@ function sendSignal(action: string, message: any) {
   webSocket.send(JSON.stringify(data));
 }
 
-function createOfferer(
-  peerUsername: string,
-  receiver_channel_name: string,
-) {
+function createOfferer(peerUsername: string, receiver: string) {
   const peer = new RTCPeerConnection();
-
   addLocalTracks(peer);
 
-  const dc = peer.createDataChannel('channel');
-
-  dc.onopen = () => console.log('Connection opened.');
+  const dc = peer.createDataChannel("channel");
   dc.onmessage = dcOnMessage;
 
   const remoteVideo = createVideo(peerUsername);
-
   setOnTrack(peer, remoteVideo);
 
   mapPeers[peerUsername] = [peer, dc];
 
   peer.oniceconnectionstatechange = () => {
     const state = peer.iceConnectionState;
-
-    if (['failed', 'disconnected', 'closed'].includes(state)) {
-      delete mapPeers[peerUsername];
-      if (state !== 'closed') peer.close();
-      removeVideo(remoteVideo);
+    if (["failed", "disconnected", "closed"].includes(state)) {
+      cleanupPeer(peerUsername, remoteVideo, peer);
     }
   };
 
   peer.onicecandidate = (event) => {
     if (event.candidate) return;
-
-    sendSignal('new-offer', {
-      sdp: peer.localDescription,
-      receiver_channel_name,
+    const sdp = peer.localDescription;
+    if (!sdp) return;
+    sendSignal("new-offer", {
+      sdp: sdp,
+      receiver_channel_name: receiver,
     });
   };
 
-  peer.createOffer().then((o) => peer.setLocalDescription(o));
-
-  return peer;
+  void peer.createOffer().then((o) => peer.setLocalDescription(o));
 }
 
-function createAnswerer(
-  offer: RTCSessionDescriptionInit,
-  peerUsername: string,
-  receiver_channel_name: string,
-) {
+function createAnswerer(offer: RTCSessionDescriptionInit, peerUsername: string, receiver: string) {
   const peer = new RTCPeerConnection();
-
   addLocalTracks(peer);
 
   const remoteVideo = createVideo(peerUsername);
-
   setOnTrack(peer, remoteVideo);
 
-  peer.ondatachannel = (e: RTCDataChannelEvent) => {
+  peer.ondatachannel = (e) => {
     const dc = e.channel;
-
     dc.onmessage = dcOnMessage;
-    dc.onopen = () => console.log('Connection opened.');
 
     mapPeers[peerUsername] = [peer, dc];
   };
 
   peer.oniceconnectionstatechange = () => {
     const state = peer.iceConnectionState;
-
-    if (['failed', 'disconnected', 'closed'].includes(state)) {
-      delete mapPeers[peerUsername];
-      if (state !== 'closed') peer.close();
-      removeVideo(remoteVideo);
+    if (["failed", "disconnected", "closed"].includes(state)) {
+      cleanupPeer(peerUsername, remoteVideo, peer);
     }
   };
 
   peer.onicecandidate = (event) => {
     if (event.candidate) return;
-
-    sendSignal('new-answer', {
-      sdp: peer.localDescription,
-      receiver_channel_name,
+    const sdp = peer.localDescription;
+    if (!sdp) return;
+    sendSignal("new-answer", {
+      sdp: sdp,
+      receiver_channel_name: receiver,
     });
   };
 
-  peer
+  void peer
     .setRemoteDescription(offer)
     .then(() => peer.createAnswer())
     .then((a) => peer.setLocalDescription(a))
-    .catch((error) => {
-      console.error(
-        `Error creating answer for ${peerUsername}`,
-        error,
-      );
+    .catch((error: unknown) => {
+      console.error("Answer error:", error);
     });
-
-  return peer;
 }
 
-function dcOnMessage(event: MessageEvent) {
-  const li = document.createElement('li');
-  li.appendChild(document.createTextNode(event.data));
+function cleanupPeer(username: string, video: HTMLVideoElement, peer: RTCPeerConnection) {
+  Reflect.deleteProperty(mapPeers, username);
+
+  peer.close();
+  removeVideo(video);
+}
+
+function dcOnMessage(event: MessageEvent<string>) {
+  const li = document.createElement("li");
+  li.textContent = event.data;
   ul.appendChild(li);
 }
 
 function getDataChannels(): RTCDataChannel[] {
-  return Object.values(mapPeers).map(([_, dc]) => dc);
-}
-
-function getPeers(
-  peerStorageObj: Record<string, PeerEntry>,
-): RTCPeerConnection[] {
-  return Object.values(peerStorageObj).map(([peer]) => peer);
+  return Object.values(mapPeers).map(([, dc]) => dc);
 }
 
 function createVideo(peerUsername: string): HTMLVideoElement {
-  const videoContainer = document.querySelector(
-    '#video-container',
-  ) as HTMLElement;
+  const container = getEl("#video-container", HTMLElement);
 
-  const remoteVideo = document.createElement('video');
-  remoteVideo.id = `${peerUsername}-video`;
-  remoteVideo.autoplay = true;
-  remoteVideo.playsInline = true;
+  const video = document.createElement("video");
+  video.autoplay = true;
+  video.playsInline = true;
 
-  const videoWrapper = document.createElement('div');
+  const wrapper = document.createElement("div");
+  const label = document.createElement("p");
 
-  videoContainer.appendChild(videoWrapper);
-  videoWrapper.appendChild(remoteVideo);
+  label.textContent = peerUsername;
 
-  const pTag = document.createElement('p');
-  pTag.className = 'text-center text-xl text-gray-700 font-bold mb-2';
-  pTag.innerHTML = peerUsername;
+  wrapper.append(video, label);
+  container.appendChild(wrapper);
 
-  videoWrapper.appendChild(pTag);
-
-  return remoteVideo;
+  return video;
 }
 
-function setOnTrack(
-  peer: RTCPeerConnection,
-  remoteVideo: HTMLVideoElement,
-) {
-  const remoteStream = new MediaStream();
-  remoteVideo.srcObject = remoteStream;
+function setOnTrack(peer: RTCPeerConnection, video: HTMLVideoElement) {
+  const stream = new MediaStream();
+  video.srcObject = stream;
 
-  peer.addEventListener('track', (event: RTCTrackEvent) => {
-    remoteStream.addTrack(event.track);
+  peer.addEventListener("track", (event) => {
+    stream.addTrack(event.track);
   });
 }
 

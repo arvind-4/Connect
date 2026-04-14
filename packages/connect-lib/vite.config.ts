@@ -1,37 +1,17 @@
-// import { defineConfig } from 'vite';
-// import path from 'path';
-
-// export default defineConfig({
-//   build: {
-//     lib: {
-//       entry: path.resolve(__dirname, 'src/index.ts'),
-//       name: 'connect-lib',
-//       formats: ['es'],
-//       fileName: () => 'connect.min.js',
-//     },
-//     minify: 'esbuild',
-//   },
-// });
-
-
-
-
-import { defineConfig } from 'vite';
-import path from 'path';
+import { defineConfig } from "vite";
+import path from "path";
 
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'ConnectLib',
-      formats: ['es'],
-      fileName: () => 'connect.min.js',
+      entry: path.resolve(__dirname, "src/index.ts"),
+      name: "ConnectLib",
+      formats: ["es"],
+      fileName: () => "connect.min.js",
     },
-
-    outDir: 'dist',
+    outDir: "dist",
     emptyOutDir: true,
-
-    minify: 'terser',
+    minify: "terser",
     terserOptions: {
       compress: {
         drop_console: true,
