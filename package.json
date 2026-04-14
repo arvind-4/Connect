@@ -6,12 +6,13 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
-    "check-types": "turbo run check-types",
-    "clean": "rimraf public/css/tailwind public/js/react public/js/connect"
+    "format": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss,html,yaml,yml}\"",
+    "clean": "rimraf node_modules apps/*/node_modules packages/*/node_modules apps/*/dist packages/*/dist apps/*/build packages/*/build public/css/tailwind public/**/*.js public/**/*.css pnpm-lock.yaml apps/*/pnpm-lock.yaml packages/*/pnpm-lock.yaml",
+    "validate": "prettier --check . && turbo run lint"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@tailwindcss/cli": "^4.2.2",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^25.6.0",
     "@types/react": "^17.0.2",
