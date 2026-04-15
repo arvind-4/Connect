@@ -12,7 +12,7 @@
     "dev": "vite --port 3000",
     "copy:js": "copyfiles -f 'dist/*.js' '../../public/js/react'",
     "copy:css": "copyfiles -f 'dist/index*.css' '../../public/css/react'",
-    "build": "vite build && pnpm copy:js && pnpm copy:css",
+    "build": "vite build && bun run copy:js && bun run copy:css",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
