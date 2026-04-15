@@ -1,1 +1,3 @@
-from .local import *
+"""Settings for the backend."""
+
+from backend.settings.local import *  # noqa: F403

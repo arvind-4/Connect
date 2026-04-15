@@ -1,6 +1,10 @@
+"""AppConfig for the video chat room."""
+
 from django.apps import AppConfig
 
 
 class VideoConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'backend.video'
+    """AppConfig for the video chat room."""
+
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "backend.video"

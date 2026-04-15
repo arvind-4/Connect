@@ -1,5 +1,9 @@
+"""AppConfig for the accounts app."""
+
 from django.apps import AppConfig
 
 
 class AccountsConfig(AppConfig):
-    name = 'backend.accounts'
+    """AppConfig for the accounts app."""
+
+    name = "backend.accounts"

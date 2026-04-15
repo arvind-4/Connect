@@ -1,11 +1,14 @@
+"""Admin for the video chat room."""
+
 from django.contrib import admin
 
-# Register your models here.
+from backend.video.models import VideoChatRoom
 
-from .models import VideoChatRoom
 
 class VideoChatRoomAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'created')
+    """Admin for the video chat room."""
+
+    list_display = ("__str__", "created")
+
 
 admin.site.register(VideoChatRoom, VideoChatRoomAdmin)
-# admin.site.register(VideoChatRoomAdmin)

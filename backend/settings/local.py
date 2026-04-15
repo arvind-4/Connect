@@ -1,66 +1,62 @@
-from backend.settings.base import *
+"""Local settings for the backend project."""
 
-print("BASE_DIR", BASE_DIR)
+from backend.infrastructure.cache.in_memory_cache import create_in_memory_cache
+from backend.infrastructure.cache.redis_cache import create_redis_cache
+from backend.infrastructure.db.postgres_db import create_postgres_db
+from backend.infrastructure.db.sqlite3_db import create_sqlite3_db
+from backend.settings.base import *  # noqa: F403
+from backend.settings.base import BASE_DIR
+from backend.settings.config import Settings
 
+SECRET_KEY = Settings.SECRET_KEY
 
+DEBUG = Settings.DEBUG
 
-SECRET_KEY = 'django-insecure-e8yccf5!q5l)@upx+)tyz*=-l_1*errtn7qfm(--bj)gal4yp_'
+ALLOWED_HOSTS = Settings.ALLOWED_HOSTS
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
-
-
-
-
-
-
-WSGI_APPLICATION = 'backend.wsgi.application'
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_TZ = True
+WSGI_APPLICATION = "backend.wsgi.application"
+ASGI_APPLICATION = "backend.asgi.application"
 
 
-STATIC_URL = 'static/'
+if Settings.USE_POSTGRES:
+    DATABASES = create_postgres_db(django_postgres_config=Settings.POSTGRES_CONFIG)
+else:
+    DATABASES = create_sqlite3_db(django_sqlite_config=Settings.SQLITE_CONFIG)
+
+
+LANGUAGE_CODE = Settings.LANGUAGE_CODE
+
+TIME_ZONE = Settings.TIME_ZONE
+
+USE_I18N = Settings.USE_I18N
+
+USE_TZ = Settings.USE_TZ
+
+
+STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'public',
+    BASE_DIR / "public",
 ]
 
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / "staticfiles_build" / "static"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "mediafiles_build" / "media"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ASGI_APPLICATION = 'backend.asgi.application'
+if Settings.USE_REDIS:
+    CHANNEL_LAYERS = create_redis_cache(django_redis_config=Settings.REDIS_CONFIG)
+else:
+    CHANNEL_LAYERS = create_in_memory_cache()
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    } 
-}
+LOGIN_URL = "sign-in"
 
-LOGIN_URL = 'sign-in'
-
-AUTH_USER_MODEL = 'accounts.Account'
+AUTH_USER_MODEL = "accounts.Account"
 
 INTERNAL_IPS = (
-    '127.0.0.1',
-    '192.168.1.23',
-    'localhost',
+    "127.0.0.1",
+    "192.168.1.23",
+    "localhost",
 )
