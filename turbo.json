@@ -11,7 +11,8 @@
         "public/css/tailwind/**",
         "public/js/**",
         "!.next/cache/**"
-      ]
+      ],
+      "cache": false
     },
     "lint": {
       "dependsOn": ["^lint"],

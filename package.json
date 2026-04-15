@@ -7,7 +7,6 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss,html,yaml,yml}\"",
-    "clean": "rimraf node_modules apps/*/node_modules packages/*/node_modules apps/*/dist packages/*/dist apps/*/build packages/*/build public/css/tailwind public/**/*.js public/**/*.css pnpm-lock.yaml apps/*/pnpm-lock.yaml packages/*/pnpm-lock.yaml",
     "validate": "prettier --check . && turbo run lint"
   },
   "devDependencies": {
@@ -46,8 +45,9 @@
     "typescript-eslint": "^8.58.1",
     "vite": "^8.0.8"
   },
-  "packageManager": "pnpm@9.0.0",
-  "engines": {
-    "node": ">=24"
-  }
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "bun@1.3.12"
 }
