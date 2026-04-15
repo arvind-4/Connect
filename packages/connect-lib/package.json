@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "copy": "copyfiles -f 'dist/connect.min.js' '../../public/js/connect'",
-    "build": "tsc -p tsconfig.build.json && vite build && pnpm copy",
+    "build": "tsc -p tsconfig.build.json && vite build && bun run copy",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix"
   }
