@@ -1,7 +1,11 @@
 [project]
 name = "connect"
 version = "0.1.0"
-description = "Add your description here"
+description = "Connect project source code"
+authors = [
+    {name = "Arvind .A", email = "pingarvindforquestions@gmail.com"},
+]
+license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
@@ -10,3 +14,23 @@ dependencies = [
     "psycopg2-binary==2.9.11",
     "whitenoise==6.11.0",
 ]
+
+[dependency-groups]
+dev = [
+    "bandit[toml]==1.8.6",
+    "pip-audit==2.9.0",
+    "poethepoet>=0.37.0",
+    "pytest==8.4.1",
+    "python-dotenv>=1.2.1",
+    "ruff==0.12.9",
+    "yamllint==1.37.1",
+]
+
+[tool.poe.executor]
+type = "uv"
+
+[tool.poe.tasks]
+dev = "python manage.py runserver"
+lint = "ruff check ."
+lint-fix = "ruff check --fix ."
+format = "ruff format ."
