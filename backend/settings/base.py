@@ -1,10 +1,12 @@
 """Django settings for backend project."""
 
 from pathlib import Path
+from typing import Any
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-INSTALLED_APPS = [
+
+INSTALLED_APPS: list[str] = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -16,7 +18,7 @@ INSTALLED_APPS = [
     "backend.accounts",
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE: list[str] = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -27,9 +29,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "backend.urls"
 
-TEMPLATES = [
+TEMPLATES: list[dict[str, Any]] = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
@@ -45,7 +46,9 @@ TEMPLATES = [
     },
 ]
 
-AUTH_PASSWORD_VALIDATORS = [
+ROOT_URLCONF = "backend.urls"
+
+AUTH_PASSWORD_VALIDATORS: list[dict[str, str]] = [
     {
         "NAME": (
             "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
@@ -61,3 +64,14 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+STATIC_URL: str = "/static/"
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "UTC"
+
+USE_I18N = True
+
+USE_TZ = True
