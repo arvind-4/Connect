@@ -1,255 +1,228 @@
-{% extends '_base.html' %} 
-
+{% extends '_base.html' %}
 {% load static %}
-
 {% block content %}
-
-<style>
-  .sidebar {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    height: 100%;
-    position: fixed;
-    width: 100%;
-    z-index: 1;
-    top: 0;
-    z-index: 1000;
-  }
-
-  .sidebar-lists {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch;
-    -webkit-animation-name: sidebar;
-    animation-name: sidebar;
-    -webkit-animation-duration: 0.25s;
-    animation-duration: 0.25s;
-    border-right: 1px solid rgba(0, 0, 0, 0.14);
-    background: #fff;
-    color: #212121;
-    display: block;
-    height: auto;
-    top: 0;
-    width: 256px;
-    height: 100%;
-    z-index: 1000;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  .lists {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-    padding-left: 0;
-    overflow-y: auto;
-  }
-
-  .sidebar-items {
-    color: #707070;
-    display: block;
-    padding-left: 30px;
-    overflow-y: auto;
-  }
-
-  .sidebar-items.items {
-    color: #707070;
-    display: block;
-    height: 40px;
-    padding-left: 30px;
-    overflow-y: auto;
-  }
-
-  .sidebar-items a {
-    text-decoration: none;
-    color: #707070;
-    overflow-y: auto;
-  }
-
-  @-webkit-keyframes sidebar {
-    0% {
-      -webkit-transform: translate3d(-256px, 0, 0);
-      transform: translate3d(-256px, 0, 0);
+  <style>
+    .sidebar {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      height: 100%;
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+      top: 0;
+      z-index: 1000;
     }
 
-    100% {
-      -webkit-transform: translate3d(0px, 0, 0);
-      transform: translate3d(0px, 0, 0);
-    }
-  }
-
-  @keyframes sidebar {
-    0% {
-      -webkit-transform: translate3d(-256px, 0, 0);
-      transform: translate3d(-256px, 0, 0);
-    }
-
-    100% {
-      -webkit-transform: translate3d(0px, 0, 0);
-      transform: translate3d(0px, 0, 0);
-    }
-  }
-
-  @-webkit-keyframes display {
-    0% {
-      opacity: 0;
+    .sidebar-lists {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+      -webkit-animation-name: sidebar;
+      animation-name: sidebar;
+      -webkit-animation-duration: 0.25s;
+      animation-duration: 0.25s;
+      border-right: 1px solid rgba(0, 0, 0, 0.14);
+      background: #fff;
+      color: #212121;
+      display: block;
+      height: auto;
+      top: 0;
+      width: 256px;
+      height: 100%;
+      z-index: 1000;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
-    100% {
-      opacity: 1;
+    .lists {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-decoration: none;
+      padding-left: 0;
+      overflow-y: auto;
     }
-  }
 
-  @keyframes display {
-    0% {
-      opacity: 0;
+    .sidebar-items {
+      color: #707070;
+      display: block;
+      padding-left: 30px;
+      overflow-y: auto;
     }
 
-    100% {
-      opacity: 1;
+    .sidebar-items.items {
+      color: #707070;
+      display: block;
+      height: 40px;
+      padding-left: 30px;
+      overflow-y: auto;
     }
-  }
 
-  .sidebar-lists::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-    border-radius: 0;
-  }
+    .sidebar-items a {
+      text-decoration: none;
+      color: #707070;
+      overflow-y: auto;
+    }
 
-  .sidebar-lists::-webkit-scrollbar-track-piece {
-    background-color: #cccccc;
-    border-radius: 0;
-  }
+    @-webkit-keyframes sidebar {
+      0% {
+        -webkit-transform: translate3d(-256px, 0, 0);
+        transform: translate3d(-256px, 0, 0);
+      }
 
-  .sidebar-lists::-webkit-scrollbar-thumb:vertical {
-    height: 6px;
-    background-color: #999999;
-    border-radius: 0;
-  }
-</style>
+      100% {
+        -webkit-transform: translate3d(0px, 0, 0);
+        transform: translate3d(0px, 0, 0);
+      }
+    }
 
-<div id="complete-div" class="text-center max-w-md mx-auto my-10">
-  <h1 id="label-username" class="my-3 text-3xl font-semibold text-gray-900">
-    Sign in
-  </h1>
-  <input
-    type="text"
-    id="username"
-    value="{{request.user.email}}"
-    class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-    disabled
-  />
-  <button
-    id="btn-join"
-    type="button"
-    class="mt-10 w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none"
-  >
-    Sign in
-  </button>
-</div>
+    @keyframes sidebar {
+      0% {
+        -webkit-transform: translate3d(-256px, 0, 0);
+        transform: translate3d(-256px, 0, 0);
+      }
 
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-4">
-  <div
-    class="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6"
-    id="video-container"
-  >
-    <div>
-      <video id="local-video" autoplay playsinline></video>
-      <p class="text-center text-xl text-gray-700 font-bold mb-2">
-        {{request.user.email}}
-      </p>
+      100% {
+        -webkit-transform: translate3d(0px, 0, 0);
+        transform: translate3d(0px, 0, 0);
+      }
+    }
+
+    @-webkit-keyframes display {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes display {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .sidebar-lists::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      border-radius: 0;
+    }
+
+    .sidebar-lists::-webkit-scrollbar-track-piece {
+      background-color: #cccccc;
+      border-radius: 0;
+    }
+
+    .sidebar-lists::-webkit-scrollbar-thumb:vertical {
+      height: 6px;
+      background-color: #999999;
+      border-radius: 0;
+    }
+  </style>
+  <div id="complete-div" class="text-center max-w-md mx-auto my-10">
+    <h1 id="label-username" class="my-3 text-3xl font-semibold text-gray-900">Sign in</h1>
+    <input type="text"
+           id="username"
+           value="{{ request.user.email }}"
+           class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
+           disabled />
+    <button id="btn-join"
+            type="button"
+            class="mt-10 w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none">
+      Sign in
+    </button>
+  </div>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-4 py-4">
+    <div class="mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6"
+         id="video-container">
+      <div>
+        <video id="local-video" autoplay playsinline>
+        </video>
+        <p class="text-center text-xl text-gray-700 font-bold mb-2">{{ request.user.email }}</p>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-lists">
-    <ul class="lists">
-      <li class="sidebar-items"><span id="takeIn">Close</span></li>
-      <div id="chat">
-        <h3>Chat</h3>
-        <div id="messages" class="pb-16 overflow-y-auto">
-          <ul id="message-list"></ul>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-lists">
+      <ul class="lists">
+        <li class="sidebar-items">
+          <span id="takeIn">Close</span>
+        </li>
+        <div id="chat">
+          <h3>Chat</h3>
+          <div id="messages" class="pb-16 overflow-y-auto">
+            <ul id="message-list">
+            </ul>
+          </div>
+          <div id="ct" class="morder rounded mt-2 fixed inset-x-0 bottom-0 p-4">
+            <input id="msg"
+                   type="text"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" />
+            <button id="btn-send-msg"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
         </div>
-        <div id="ct" class="morder rounded mt-2 fixed inset-x-0 bottom-0 p-4">
-          <input
-            id="msg"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
-          />
-          <button
-            id="btn-send-msg"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
-    </ul>
+      </ul>
+    </div>
   </div>
-</div>
+  <footer class="bg-gray-700 text-xl text-white text-center fixed inset-x-0 bottom-0 p-4">
+    <div class="text-center">
+      <button type="button"
+              id="bringOut"
+              class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800">
+        <i class="fas fa-comment-alt"></i>
+      </button>
+      <button type="button"
+              class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+        <i class="fas fa-phone-slash"></i>
+      </button>
+      <button type="button"
+              id="btn-toggle-audio"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <i class="fas fa-microphone-slash"></i>
+      </button>
+      <button type="button"
+              id="btn-toggle-video"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <i class="fas fa-video-slash"></i>
+      </button>
+    </div>
+  </footer>
+  {{ room_id|json_script:"json-room_id" }}
+  <script type="text/javascript" src="{% static 'js/connect/connect.min.js' %}"></script>
+  <script>
+    var bringOut = document.getElementById("bringOut");
+    var takeIn = document.getElementById("takeIn");
+    var sidebar = document.getElementById("sidebar");
 
-<footer
-  class="bg-gray-700 text-xl text-white text-center fixed inset-x-0 bottom-0 p-4"
->
-  <div class="text-center">
-    <button
-      type="button"
-      id="bringOut"
-      class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800"
-    >
-      <i class="fas fa-comment-alt"></i>
-    </button>
-    <button
-      type="button"
-      class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-    >
-      <i class="fas fa-phone-slash"></i>
-    </button>
-    <button
-      type="button"
-      id="btn-toggle-audio"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    >
-      <i class="fas fa-microphone-slash"></i>
-    </button>
-    <button
-      type="button"
-      id="btn-toggle-video"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    >
-      <i class="fas fa-video-slash"></i>
-    </button>
-  </div>
-</footer>
+    bringOut.addEventListener("click", out);
+    takeIn.addEventListener("click", inside);
+    window.addEventListener("click", outside);
 
-{{ room_id|json_script:"json-room_id" }}
+    function out() {
+      sidebar.style.display = "block";
+    }
 
-<script type="text/javascript" src="{% static 'js/connect/connect.min.js' %}"></script>
-<script>
-  var bringOut = document.getElementById("bringOut");
-  var takeIn = document.getElementById("takeIn");
-  var sidebar = document.getElementById("sidebar");
-
-  bringOut.addEventListener("click", out);
-  takeIn.addEventListener("click", inside);
-  window.addEventListener("click", outside);
-
-  function out() {
-    sidebar.style.display = "block";
-  }
-  function inside() {
-    sidebar.style.display = "none";
-  }
-  function outside(e) {
-    if (e.target == sidebar) {
+    function inside() {
       sidebar.style.display = "none";
     }
-  }
-</script>
+
+    function outside(e) {
+      if (e.target == sidebar) {
+        sidebar.style.display = "none";
+      }
+    }
+  </script>
 {% endblock content %}
