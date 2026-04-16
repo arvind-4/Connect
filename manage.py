@@ -18,7 +18,7 @@ except ImportError:
         "Run `uv sync` to sync the dependencies."
         "or run `uv add --dev  python-dotenv` to add it."
     )
-    logger.error(msg)
+    logger.exception(msg)
 
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent
