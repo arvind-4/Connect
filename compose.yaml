@@ -1,0 +1,56 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app.Dockerfile
+    container_name: app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    command: /usr/src/connect/.venv/bin/daphne backend.asgi:application --bind 0.0.0.0 --port 8000
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - connect-network
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DJANGO_POSTGRES_DB}
+      POSTGRES_USER: ${DJANGO_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DJANGO_POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DJANGO_POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - connect-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - connect-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  
+networks:
+  connect-network:
