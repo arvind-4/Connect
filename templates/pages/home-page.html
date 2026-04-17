@@ -1,7 +1,7 @@
-{% extends '_base.html' %}
+{% extends "_base.html" %}
 {% block content %}
-  {% include 'react/css.html' %}
-  {% include 'react/js.html' %}
+  {% include "react/css.html" %}
+  {% include "react/js.html" %}
   <script>
     if (localStorage.getItem('sidebar-expanded') == 'true') {
       document.querySelector('body').classList.add('sidebar-expanded');

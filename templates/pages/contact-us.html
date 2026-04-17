@@ -1,9 +1,9 @@
-{% extends '_base.html' %}
+{% extends "_base.html" %}
 {% block head %}
 {% endblock head %}
 {% block content %}
-  <div class='fixed top-0'>
-    <button class='my-8 ml-auto px-2 py-2 bg-red-500 text-white text-sm font-bold tracking-wide rounded-full focus:outline-none'
+  <div class="fixed top-0">
+    <button class="my-8 ml-auto px-2 py-2 bg-red-500 text-white text-sm font-bold tracking-wide rounded-full focus:outline-none"
             onclick="history.back()">
       <i class="fa-solid fa-caret-left"></i>
     </button>
@@ -54,10 +54,13 @@
           <div class="relative flex flex-col min-w-0 break-words w-full">
             <div class="flex-auto p-5 lg:p-10">
               <img src="https://user-images.githubusercontent.com/54521023/152731049-cc744a56-1d6f-4945-9566-0fa3b7ad1d24.png"
-                   alt="contact image">
+                   alt="contact image"
+                   height="100"
+                   width="100">
             </div>
           </div>
         </div>
       </div>
     </div>
-  {% endblock content %}
+  </div>
+{% endblock content %}
