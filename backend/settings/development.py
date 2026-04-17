@@ -1,16 +1,14 @@
 """Local settings for the backend project."""
 
-import os
-
 from backend.settings.base import *  # noqa: F403
 from backend.settings.base import BASE_DIR
+from backend.utils import get_env_as_bool, get_env_as_list, get_env_as_str
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY") or "12"
+SECRET_KEY = get_env_as_str("DJANGO_SECRET_KEY", default="PUT_YOUR_SECRET_KEY_HERE")
 
-DEBUG = os.environ.get("DJANGO_DEBUG") or True
+DEBUG = get_env_as_bool("DJANGO_DEBUG", default=True)
 
-ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS = get_env_as_list("DJANGO_ALLOWED_HOSTS", default=["*"])
 
 WSGI_APPLICATION = "backend.wsgi.application"
 ASGI_APPLICATION = "backend.asgi.application"

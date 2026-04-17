@@ -1,27 +1,31 @@
 """Production settings for the backend project."""
 
-import os
-
 from backend.settings.base import *  # noqa: F403
 from backend.settings.base import BASE_DIR
+from backend.utils import (
+    get_env_as_bool,
+    get_env_as_int,
+    get_env_as_list,
+    get_env_as_str,
+)
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = get_env_as_str("DJANGO_SECRET_KEY")
 
-ADMIN_URL = os.environ.get("DJANGO_ADMIN_URL")
+ADMIN_URL = get_env_as_str("DJANGO_ADMIN_URL")
 
-DEBUG = os.environ.get("DJANGO_DEBUG")
+DEBUG = get_env_as_bool("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS")
+ALLOWED_HOSTS = get_env_as_list("DJANGO_ALLOWED_HOSTS")
 
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DJANGO_POSTGRES_DB"),
-        "HOST": os.environ.get("DJANGO_POSTGRES_HOST"),
-        "PORT": os.environ.get("DJANGO_POSTGRES_PORT"),
-        "USER": os.environ.get("DJANGO_POSTGRES_USER"),
-        "PASSWORD": os.environ.get("DJANGO_POSTGRES_PASSWORD"),
+        "NAME": get_env_as_str("DJANGO_POSTGRES_DB"),
+        "HOST": get_env_as_str("DJANGO_POSTGRES_HOST"),
+        "PORT": get_env_as_str("DJANGO_POSTGRES_PORT"),
+        "USER": get_env_as_str("DJANGO_POSTGRES_USER"),
+        "PASSWORD": get_env_as_str("DJANGO_POSTGRES_PASSWORD"),
     }
 }
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -49,8 +53,8 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [
                 (
-                    os.environ.get("DJANGO_REDIS_HOST"),
-                    os.environ.get("DJANGO_REDIS_PORT"),
+                    get_env_as_str("DJANGO_REDIS_HOST"),
+                    get_env_as_int("DJANGO_REDIS_PORT"),
                 )
             ],
         },
