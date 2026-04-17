@@ -1,0 +1,10 @@
+{
+  "name": "connect-css",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tailwindcss -i ./tailwind.css -o ../../public/css/tailwind/tailwind.min.css --watch",
+    "build": "tailwindcss -i ./tailwind.css -o ../../public/css/tailwind/tailwind.min.css --minify"
+  }
+}

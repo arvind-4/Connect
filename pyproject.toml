@@ -1,0 +1,77 @@
+[project]
+
+name = 'connect'
+version = '0.1.0'
+description = 'Connect project source code'
+authors = [
+  { name = 'Arvind .A', email = 'pingarvindforquestions@gmail.com' },
+]
+license = { text = 'MIT' }
+readme = 'README.md'
+requires-python = '>=3.9'
+dependencies = [
+  'channels==3.0.4',
+  'django>=4.2,<4.3',
+  'psycopg2-binary==2.9.11',
+  'whitenoise==6.11.0',
+]
+
+[dependency-groups]
+
+dev = [
+  'bandit[toml]==1.8.6',
+  'djlint==1.36.4',
+  'pip-audit==2.9.0',
+  'poethepoet>=0.37.0',
+  'pytest==8.4.1',
+  'python-dotenv>=1.2.1',
+  'ruff==0.12.9',
+  'yamllint==1.37.1',
+]
+
+[tool.poe.executor]
+
+type = 'uv'
+
+[tool.poe.tasks]
+
+dev = 'python manage.py runserver'
+lint = ['lint_ruff', 'lint_djlint']
+format = ['format_ruff', 'format_djlint']
+format-check = ['format_ruff --check', 'format_djlint']
+lint-fix = ['lint_ruff --fix', 'lint_djlint']
+audit = 'pip-audit -l'
+scan = 'bandit -r ./backend manage.py'
+
+[tool.poe.tasks.format_ruff]
+
+cmd = 'ruff format .'
+
+[tool.poe.tasks.format_djlint]
+
+cmd = 'djlint templates --reformat --format-css --format-js'
+
+[tool.poe.tasks.lint_ruff]
+
+cmd = 'ruff check .'
+
+[tool.poe.tasks.lint_djlint]
+
+cmd = 'djlint templates --lint'
+
+[tool.djlint]
+
+files = ['templates']
+format_css = true
+format_js = true
+indent = 2.0
+profile = 'django'
+use_gitignore = true
+
+[tool.djlint.js]
+
+indent_size = 2
+
+[tool.djlint.css]
+
+indent_size = 2
