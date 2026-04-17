@@ -23,9 +23,10 @@ COPY --from=base /tmp/public ./public
 COPY backend ./backend
 COPY manage.py ./
 COPY templates ./templates
+COPY commands ./commands
+COPY manage.py ./
 
 RUN /usr/src/connect/.venv/bin/python manage.py collectstatic --no-input
-RUN /usr/src/connect/.venv/bin/python manage.py migrate --no-input
 
 FROM python:3.9.25-alpine3.22@sha256:c99b6eb43b3ac4d750db3d6e8b22268d5ea9a99deead7218ce3deda7f2ca029c AS runner
 
@@ -34,3 +35,7 @@ COPY --from=web-build /usr/src/connect/.venv /usr/src/connect/.venv
 COPY --from=web-build /usr/src/connect/staticfiles_build /usr/src/connect/staticfiles_build
 COPY --from=web-build /usr/src/connect/backend /usr/src/connect/backend
 COPY --from=web-build /usr/src/connect/templates /usr/src/connect/templates
+COPY --from=web-build /usr/src/connect/commands /usr/src/connect/commands
+COPY --from=web-build /usr/src/connect/manage.py /usr/src/connect/manage.py
+
+RUN chmod +x /usr/src/connect/commands/docker-start.sh
