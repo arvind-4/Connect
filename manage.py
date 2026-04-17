@@ -25,10 +25,6 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent
 
 env_files: list[str] = [
     ".env",
-    ".env.local",
-    ".env.dev",
-    ".env.development",
-    ".env.production",
 ]
 
 for env_file in env_files:
